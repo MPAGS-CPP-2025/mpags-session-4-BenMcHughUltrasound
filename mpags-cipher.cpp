@@ -5,10 +5,47 @@
 int main(int argc, char* argv[])
 {
     const std::vector<std::string> cmdLineArgs { argv, argv+argc };
-    for (int i=0; i<argc; i++)
-    {
-        std::cout << cmdLineArgs[i] << std::endl;
+    std::string inputFile;
+    std::string outputFile;
+
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+
+        if (arg == "-h" || arg == "--help") {
+            std::cout << "Usage: program_name [options]\n"
+                      << "Options:\n"
+                      << "  -h, --help           Show this help message\n"
+                      << "  --version            Show version information\n"
+                      << "  -i <input_file>      Specify input file\n"
+                      << "  -o <output_file>     Specify output file\n";
+            return 0;
+        } else if (arg == "--version") {
+            std::cout << "Program version 1.0.0\n";
+            return 0;
+        } else if (arg == "-i") {
+            if (i + 1 < argc) {
+                inputFile = argv[++i];
+            } else {
+                std::cerr << "Error: -i requires an input file argument\n";
+                return 1;
+            }
+        } else if (arg == "-o") {
+            if (i + 1 < argc) {
+                outputFile = argv[++i];
+            } else {
+                std::cerr << "Error: -o requires an output file argument\n";
+                return 1;
+            }
+        } else {
+            std::cerr << "Warning: Unknown option '" << arg << "' ignored\n";
+        }
     }
+
+    std::cout << "Input File: " << (inputFile.empty() ? "None" : inputFile) << "\n";
+    std::cout << "Output File: " << (outputFile.empty() ? "None" : outputFile) << "\n";
+
+     
+
 
     // Initialise variables
     char c{'x'};
